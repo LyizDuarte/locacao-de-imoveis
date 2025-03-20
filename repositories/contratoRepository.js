@@ -2,6 +2,10 @@ import Database from "../db/database.js"
 
 export default class ContratoRepository {
   #banco
+  // para as transacoes
+  set banco(value) {
+    this.#banco = value
+  }
 
   constructor() {
     this.#banco = new Database()

@@ -13,7 +13,7 @@ export default class AuthMiddleware {
         perfilId: perfilId,
       },
       SECRET,
-      { expiresIn: 360 }
+      { expiresIn: 3600 }
     )
   }
 
@@ -28,6 +28,7 @@ export default class AuthMiddleware {
       let usuarioBanco = await repo.obter(usuarioToken.id)
       if (usuarioBanco.length > 0) {
         if (usuarioBanco[0].ativo) {
+          req.usuarioLogado = usuarioBanco[0]
           next()
         } else {
           res.status(401).json({ msg: "Usuário inativo" })

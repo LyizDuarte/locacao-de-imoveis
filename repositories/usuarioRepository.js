@@ -4,6 +4,10 @@ import UsuarioEntity from "../entities/usuarioEntity.js"
 
 export default class UsuarioRepository {
   #banco
+  // para as transacoes
+  set banco(value) {
+    this.#banco = value
+  }
   constructor() {
     this.#banco = new Database()
   }

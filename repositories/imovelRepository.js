@@ -3,6 +3,10 @@ import ImovelEntity from "../entities/imovelEntity.js"
 
 export default class ImovelRepository {
   #banco
+  // para as transacoes
+  set banco(value) {
+    this.#banco = value
+  }
   constructor() {
     this.#banco = new Database()
   }
@@ -62,13 +66,16 @@ export default class ImovelRepository {
       entidade.valor,
       entidade.disponivel,
     ]
-    let result = await this.#banco.ExecutaComandoNonQuery(sql, valores)
-    return result
+    let idImovel = await this.#banco.ExecutaComandoNonQuery(sql, valores)
+    if (idImovel > 0) {
+      entidade.id = idImovel
+      return true
+    }
+    return false
   }
   async alterar(entidade) {
     let sql = `update tb_imovel set imv_descricao = ?, imv_cep = ?, imv_endereco = ?, 
-    imv_bairro = ?, imv_cidade = ?, imv_valor = ?, imv_disponivel = ? where imv_id = ? 
-    values (?, ?, ? ,?, ?, ?, ?, ?)`
+    imv_bairro = ?, imv_cidade = ?, imv_valor = ?, imv_disponivel = ? where imv_id = ? `
     let valores = [
       entidade.descricao,
       entidade.cep,

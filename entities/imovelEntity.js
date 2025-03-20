@@ -9,6 +9,7 @@ export default class ImovelEntity extends BaseEntity {
   #cidade
   #valor
   #disponivel
+  #imagens
 
   get id() {
     return this.#id
@@ -58,7 +59,23 @@ export default class ImovelEntity extends BaseEntity {
   set disponivel(value) {
     this.#disponivel = value
   }
-  constructor(id, descricao, cep, endereco, bairro, cidade, valor, disponivel) {
+  get imagens() {
+    return this.#imagens
+  }
+  set imagens(value) {
+    this.#imagens = value
+  }
+  constructor(
+    id,
+    descricao,
+    cep,
+    endereco,
+    bairro,
+    cidade,
+    valor,
+    disponivel,
+    imagens
+  ) {
     super()
     this.#id = id
     this.#descricao = descricao
@@ -68,6 +85,7 @@ export default class ImovelEntity extends BaseEntity {
     this.#cidade = cidade
     this.#valor = valor
     this.#disponivel = disponivel
+    this.#imagens = imagens
   }
   validar() {
     if (

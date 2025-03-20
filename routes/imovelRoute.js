@@ -1,7 +1,9 @@
 import express from "express"
 import ImovelController from "../controllers/imovelController.js"
 import AuthMiddleware from "../middlewares/authMiddleware.js"
+import Multer from "multer"
 const router = express.Router()
+const upload = Multer()
 let ctrl = new ImovelController()
 let authMiddleware = new AuthMiddleware()
 
@@ -21,14 +23,18 @@ router.get("/imovel/:id", authMiddleware.validar, (req, res) => {
   //#swagger.summary = "Retorna um imóvel através do id informado"
   ctrl.obter(req, res)
 })
-router.post("/imovel", authMiddleware.validar, (req, res) => {
-  /* #swagger.security = [{
+router.post(
+  "/imovel",
+  authMiddleware.validar,
+  upload.array("imagens", 5),
+  (req, res) => {
+    /* #swagger.security = [{
             "bearerAuth": []
     }] */
-  //#swagger.tags = ["Imóvel"]
-  //#swagger.summary = "Cadastra um novo imóvel"
+    //#swagger.tags = ["Imóvel"]
+    //#swagger.summary = "Cadastra um novo imóvel"
 
-  /* #swagger.requestBody = {
+    /* #swagger.requestBody = {
         required: true,
         content:{
             "application/json":{
@@ -39,8 +45,9 @@ router.post("/imovel", authMiddleware.validar, (req, res) => {
         }
    } 
   */
-  ctrl.cadastrar(req, res)
-})
+    ctrl.cadastrar(req, res)
+  }
+)
 router.put("/imovel", authMiddleware.validar, (req, res) => {
   /* #swagger.security = [{
             "bearerAuth": []

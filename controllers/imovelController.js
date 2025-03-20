@@ -1,10 +1,14 @@
 import ImovelEntity from "../entities/imovelEntity.js"
 import ImovelRepository from "../repositories/imovelRepository.js"
+import ImagemImovelEntity from "../entities/imagemImovelEntity.js"
+import ImagemImovelRepository from "../repositories/imagemImovelRepository.js"
 
 export default class ImovelController {
   #repoImovel
+  #repoImagens
   constructor() {
     this.#repoImovel = new ImovelRepository()
+    this.#repoImagens = new ImagemImovelRepository()
   }
   async listar(req, res) {
     var lista = await this.#repoImovel.listar()
@@ -22,6 +26,7 @@ export default class ImovelController {
   async cadastrar(req, res) {
     const { descricao, cep, endereco, bairro, cidade, valor, disponivel } =
       req.body
+
     let imovel = new ImovelEntity(
       0,
       descricao,
@@ -34,6 +39,26 @@ export default class ImovelController {
     )
     if (imovel.validar()) {
       if (await this.#repoImovel.cadastrar(imovel)) {
+        let imagens = []
+        if (req.files.length > 0) {
+          for (let imagem of req.files) {
+            let imagemEntity = new ImagemImovelEntity()
+            imagemEntity.imagem = imagem.buffer
+            imagemEntity.imovel = imovel
+            imagemEntity.extensao = imagem.mimetype.split("/").pop()
+            if (imagemEntity.validar()) {
+              imagens.push(imagemEntity)
+            } else {
+              throw new Error(
+                "Imagem não está no formato valido (Permitido apenas PNG, JPG e JPEG)"
+              )
+            }
+            for (let img of imagens) {
+              if ((await this.#repoImagens.gravar(img)) == false)
+                throw new Error("Erro ao gravar as imagens no banco de dados")
+            }
+          }
+        }
         res.status(200).json({ msg: "Imovel cadastrado com sucesso!" })
       } else throw new Error("Erro ao inserir imóvel no banco de dados")
     } else {
