@@ -81,8 +81,27 @@ export default class ImovelController {
       disponivel
     )
     if (imovel.validar()) {
+      let imagemEntity = new ImagemImovelEntity()
       if ((await this.#repoImovel.obter(id)).length > 0) {
+        let imagens = []
+        if (req.files.length > 0) {
+          for (let imagem of req.file) {
+            imagemEntity.imovel = imovel
+            imagemEntity.extensao = imagem.mimetype.split("/").pop()
+            imagemEntity.imagem = imagem.buffer
+            if (imagemEntity.validar()) {
+              imagens.push(imagemEntity)
+            } else throw new Error("A imagem não possui um formato válido")
+          }
+        }
         if (await this.#repoImovel.alterar(imovel)) {
+          //deleta as imagens antigas
+          await this.#repoImagens.deletarPorImovel(imovel.id)
+          //insere as novas imagens que vieram na requisão
+          for (let img of imagens) {
+            if ((await this.#repoImagens.gravar(img)) == false) 
+              throw new Error("Erro ao atualizar as imagens")
+          }
           res.status(200).json({ msg: "Imovel alterado com sucesso!" })
         } else throw new Error("Erro ao alterar imóvel no banco de dados")
       }
