@@ -30,7 +30,7 @@ export default class AluguelRepository {
   async marcarPagamento(id) {
     let sql = `update tb_aluguel set alu_pago = 'S' where alu_id = ?`
     let params = [id]
-    let result = this.#banco.ExecutaComandoNonQuery(sql, params)
+    let result = await this.#banco.ExecutaComandoNonQuery(sql, params)
     return result
   }
 
@@ -38,7 +38,7 @@ export default class AluguelRepository {
     let sql = `select * from tb_aluguel a inner join tb_contrato c 
                 on a.ctr_id = c.ctr_id where c.usu_id = ?`
     let params = [usuId]
-    let result = this.#banco.ExecutaComando(sql, params)
+    let result = await this.#banco.ExecutaComando(sql, params)
     let lista = []
     for (let row of result) {
       lista.push(

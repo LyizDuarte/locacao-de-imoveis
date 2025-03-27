@@ -66,7 +66,7 @@ export default class ImovelRepository {
       entidade.valor,
       entidade.disponivel,
     ]
-    let idImovel = await this.#banco.ExecutaComandoNonQuery(sql, valores)
+    let idImovel = await this.#banco.ExecutaComandoLastInserted(sql, valores)
     if (idImovel > 0) {
       entidade.id = idImovel
       return true

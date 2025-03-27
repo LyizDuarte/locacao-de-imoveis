@@ -9,7 +9,7 @@ export default class ImagemImovelRepository {
     let sql = `insert into tb_imovelimagem (imv_id, imi_img)
                 values (?, ?)`
     let params = [entidade.imovel.id, entidade.imagem]
-    let result = this.#banco.ExecutaComandoNonQuery(sql, params)
+    let result = await this.#banco.ExecutaComandoNonQuery(sql, params)
     return result
   }
   async deletar(id) {
