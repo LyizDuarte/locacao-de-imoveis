@@ -37,7 +37,7 @@ router.post(
     /* #swagger.requestBody = {
         required: true,
         content:{
-            "application/json":{
+            "multipart/form-data":{
                 schema:{
                     $ref: "#/components/schemas/imovel"
                 }
@@ -48,16 +48,20 @@ router.post(
     ctrl.cadastrar(req, res)
   }
 )
-router.put("/imovel", authMiddleware.validar, (req, res) => {
-  /* #swagger.security = [{
+router.put(
+  "/imovel",
+  authMiddleware.validar,
+  upload.array("imagens", 5),
+  (req, res) => {
+    /* #swagger.security = [{
             "bearerAuth": []
     }] */
-  //#swagger.tags = ["Imóvel"]
-  //#swagger.summary = "Altera um imóvel existente através do id"
-  /* #swagger.requestBody = {
+    //#swagger.tags = ["Imóvel"]
+    //#swagger.summary = "Altera um imóvel existente através do id"
+    /* #swagger.requestBody = {
         required: true,
         content:{
-            "application/json":{
+            "multipart/form-data":{
                 schema:{
                     $ref: "#/components/schemas/imovel"
                 }
@@ -65,8 +69,9 @@ router.put("/imovel", authMiddleware.validar, (req, res) => {
         }
    } 
   */
-  ctrl.alterar(req, res)
-})
+    ctrl.alterar(req, res)
+  }
+)
 router.delete("/imovel/:id", authMiddleware.validar, (req, res) => {
   /* #swagger.security = [{
             "bearerAuth": []
