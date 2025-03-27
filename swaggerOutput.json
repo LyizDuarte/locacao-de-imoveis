@@ -246,7 +246,7 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "$ref": "#/components/schemas/imovel"
               }
@@ -279,7 +279,7 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "$ref": "#/components/schemas/imovel"
               }
@@ -397,43 +397,74 @@
           }
         }
       }
+    },
+    "/aluguel": {
+      "get": {
+        "tags": [
+          "Aluguel"
+        ],
+        "summary": "Retorna todos os aluguéis do usuário",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/aluguel/pagar": {
+      "patch": {
+        "tags": [
+          "Aluguel"
+        ],
+        "summary": "Confirma o pagamento do aluguel no banco de dados",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
-      "imovel": {
-        "type": "object",
-        "properties": {
-          "descricao": {
-            "type": "string",
-            "example": "Apartamento Beira Mar"
-          },
-          "cep": {
-            "type": "string",
-            "example": "Rua Beira Mar, 10"
-          },
-          "endereco": {
-            "type": "string",
-            "example": "19282-9238"
-          },
-          "bairro": {
-            "type": "string",
-            "example": "Bairro Beira Mar"
-          },
-          "cidade": {
-            "type": "string",
-            "example": "Cidade Beira Mar - SP"
-          },
-          "valor": {
-            "type": "number",
-            "example": 1900
-          },
-          "disponivel": {
-            "type": "boolean",
-            "example": true
-          }
-        }
-      },
       "usuario": {
         "type": "object",
         "properties": {
@@ -464,6 +495,57 @@
                 "type": "string",
                 "example": "Administrador"
               }
+            }
+          }
+        }
+      },
+      "imovel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "required": false
+          },
+          "descricao": {
+            "example": "Casa em Paraisópolis",
+            "type": "string",
+            "required": true
+          },
+          "cep": {
+            "example": 1928320,
+            "type": "string",
+            "required": true
+          },
+          "endereco": {
+            "example": "Rua Dezesete, 10",
+            "type": "string",
+            "required": true
+          },
+          "bairro": {
+            "example": "Bairro do Paraiso",
+            "type": "string",
+            "required": true
+          },
+          "cidade": {
+            "example": "São Paulo",
+            "type": "string",
+            "required": true
+          },
+          "valor": {
+            "example": 800,
+            "type": "number",
+            "required": true
+          },
+          "disponivel": {
+            "example": "S",
+            "type": "string",
+            "required": true
+          },
+          "imagens": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "binary"
             }
           }
         }

@@ -11,16 +11,6 @@ const doc = {
   },
   components: {
     schemas: {
-      imovel: new ImovelEntity(
-        0,
-        "Apartamento Beira Mar",
-        "Rua Beira Mar, 10",
-        "19282-9238",
-        "Bairro Beira Mar",
-        "Cidade Beira Mar - SP",
-        1900.0,
-        true
-      ).toJSON(),
       usuario: new UsuarioEntity(
         0,
         "Fulano da Silva",
@@ -29,6 +19,59 @@ const doc = {
         "abc123",
         new PerfilEntity(1, "Administrador").toJSON()
       ).toJSON(),
+    },
+    "@schemas": {
+      imovel: {
+        type: "object",
+        properties: {
+          id: {
+            type: "integer",
+            required: false,
+          },
+          descricao: {
+            example: "Casa em Paraisópolis",
+            type: "string",
+            required: true,
+          },
+          cep: {
+            example: 1928320,
+            type: "string",
+            required: true,
+          },
+          endereco: {
+            example: "Rua Dezesete, 10",
+            type: "string",
+            required: true,
+          },
+          bairro: {
+            example: "Bairro do Paraiso",
+            type: "string",
+            required: true,
+          },
+          cidade: {
+            example: "São Paulo",
+            type: "string",
+            required: true,
+          },
+          valor: {
+            example: 800,
+            type: "number",
+            required: true,
+          },
+          disponivel: {
+            example: "S",
+            type: "string",
+            required: true,
+          },
+          imagens: {
+            type: "array",
+            items: {
+              type: "string",
+              format: "binary",
+            },
+          },
+        },
+      },
     },
     securitySchemes: {
       bearerAuth: {
@@ -43,7 +86,8 @@ const routes = [
   "./routes/autenticacaoRoute.js",
   "./routes/usuarioRoute.js",
   "./routes/imovelRoute.js",
-  "./routes/locacaoRoute.js"
+  "./routes/locacaoRoute.js",
+  "./routes/aluguelRoute.js",
 ]
 const outputJson = "./swaggerOutput.json"
 

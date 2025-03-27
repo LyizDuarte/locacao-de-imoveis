@@ -12,7 +12,7 @@ export default class AuthMiddleware {
         perfilId: perfilId,
       },
       SECRET,
-      { expiresIn: 5 }
+      { expiresIn: 3200 }
     )
   }
 
