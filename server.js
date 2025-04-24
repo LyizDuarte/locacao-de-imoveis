@@ -1,4 +1,5 @@
 import express from "express"
+import cors from "cors"
 import usuarioRoute from "./routes/usuarioRoute.js"
 import imovelRoute from "./routes/imovelRoute.js"
 import authRoute from "./routes/autenticacaoRoute.js"
@@ -12,6 +13,7 @@ const outputJson = require("./swaggerOutput.json")
 
 const app = express()
 app.use(express.json())
+app.use(cors())
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(outputJson))
 app.use("/", catchErrors(usuarioRoute))
