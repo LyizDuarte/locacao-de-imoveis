@@ -14,7 +14,7 @@ const doc = {
         0,
         "Fulano da Silva",
         "fulano@gmail.com",
-        true,
+        1,
         "abc123",
         new PerfilEntity(1, "Administrador").toJSON()
       ).toJSON(),
