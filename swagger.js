@@ -6,8 +6,7 @@ const doc = {
   host: "localhost:5000",
   info: {
     title: "API REST - PFS2",
-    description:
-      "API utilizando os padrões REST na disciplina de programação Full Stack 2",
+    description: "API utilizando os padrões REST na disciplina de programação Full Stack 2",
   },
   components: {
     schemas: {
@@ -88,13 +87,10 @@ const routes = [
   "./routes/imovelRoute.js",
   "./routes/locacaoRoute.js",
   "./routes/aluguelRoute.js",
+  "./routes/perfilRoute.js",
 ]
 const outputJson = "./swaggerOutput.json"
 
-swaggerAutogen({ openapi: "3.0.0", autoHeaders: false })(
-  outputJson,
-  routes,
-  doc
-).then(async () => {
+swaggerAutogen({ openapi: "3.0.0", autoHeaders: false })(outputJson, routes, doc).then(async () => {
   await import("./server.js")
 })

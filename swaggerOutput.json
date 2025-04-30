@@ -422,6 +422,28 @@
           }
         }
       }
+    },
+    "/perfil": {
+      "get": {
+        "tags": [
+          "Perfil"
+        ],
+        "summary": "Retorna todos os perfis cadastrados no banco de dados",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
     }
   },
   "components": {
