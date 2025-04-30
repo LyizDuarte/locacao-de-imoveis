@@ -16,7 +16,7 @@ export default class UsuarioController {
   async cadastrar(req, res) {
     if (req.body) {
       let { nome, email, ativo, senha, perfil } = req.body
-      if (nome && email && ativo && senha && perfil) {
+      if (nome && email && senha && perfil) {
         let entidade = new UsuarioEntity(0, nome, email, ativo, senha, new PerfilEntity(perfil.id))
         if (await this.#repo.cadastrar(entidade)) return res.status(201).json({ msg: "Usuario cadastrado com sucesso" })
         else throw new Exception("Erro ao inserir usuário no banco de dados")
