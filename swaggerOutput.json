@@ -460,8 +460,8 @@
             "example": "fulano@gmail.com"
           },
           "ativo": {
-            "type": "boolean",
-            "example": true
+            "type": "number",
+            "example": 1
           },
           "senha": {
             "type": "string",
