@@ -3,6 +3,7 @@
 import { apiClient } from "@/utils/apiClient"
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import toast from "react-hot-toast"
 
 export default function UsuariosPage() {
   const [lista, setLista] = useState([])
@@ -10,6 +11,37 @@ export default function UsuariosPage() {
   useEffect(() => {
     listar()
   }, [])
+
+  async function deletar(id) {
+    toast((t) => (
+      <div>
+        <b>Tem certeza que deseja excluir o usuário?</b>
+        <br />
+        <br />
+        <div style={{ textAlign: "center" }}>
+          <button style={{ marginRight: "5px" }} onClick={() => confirmaDelecao(id, t.id)} className="btn btn-danger">
+            <i style={{ marginRight: "5px" }} class="fa fa-trash" aria-hidden="true"></i>
+            Confirmar
+          </button>
+          <button onClick={() => toast.dismiss(t.id)} className="btn btn-secondary">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    ))
+  }
+
+  async function confirmaDelecao(id, toastId) {
+    toast.dismiss(toastId)
+    try {
+      await apiClient.delete("/usuarios/" + id)
+      setLista(lista.filter((x) => x.id !== id))
+      toast.success("Usuário excluído com sucesso!")
+    } catch (error) {
+      toast.error("Erro ao excluir o usuário.")
+      console.error(error)
+    }
+  }
 
   async function listar() {
     let resposta = await apiClient.get("/usuarios")
@@ -46,10 +78,14 @@ export default function UsuariosPage() {
                 <td>{value.perfil.descricao}</td>
                 <td>{value.ativo == 1 ? "Sim" : "Não"}</td>
                 <td>
-                  <Link style={{ marginRight: "5px" }} href="#" className="btn btn-primary">
+                  <Link
+                    style={{ marginRight: "5px" }}
+                    href={"/admin/usuarios/alterar/" + value.id}
+                    className="btn btn-primary"
+                  >
                     <i className="fas fa-pen"></i>
                   </Link>
-                  <button className="btn btn-danger">
+                  <button onClick={() => deletar(value.id)} className="btn btn-danger">
                     <i className="fas fa-trash"></i>
                   </button>
                 </td>
