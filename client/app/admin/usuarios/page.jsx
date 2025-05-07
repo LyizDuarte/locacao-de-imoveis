@@ -70,27 +70,31 @@ export default function UsuariosPage() {
             </tr>
           </thead>
           <tbody>
-            {lista.map((value, index) => (
-              <tr key={index}>
-                <td>{value.id}</td>
-                <td>{value.nome}</td>
-                <td>{value.email}</td>
-                <td>{value.perfil.descricao}</td>
-                <td>{value.ativo == 1 ? "Sim" : "Não"}</td>
-                <td>
-                  <Link
-                    style={{ marginRight: "5px" }}
-                    href={"/admin/usuarios/alterar/" + value.id}
-                    className="btn btn-primary"
-                  >
-                    <i className="fas fa-pen"></i>
-                  </Link>
-                  <button onClick={() => deletar(value.id)} className="btn btn-danger">
-                    <i className="fas fa-trash"></i>
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {lista && lista.length > 0 ? (
+              lista.map((value, index) => (
+                <tr key={index}>
+                  <td>{value.id}</td>
+                  <td>{value.nome}</td>
+                  <td>{value.email}</td>
+                  <td>{value.perfil.descricao}</td>
+                  <td>{value.ativo == 1 ? "Sim" : "Não"}</td>
+                  <td>
+                    <Link
+                      style={{ marginRight: "5px" }}
+                      href={"/admin/usuarios/alterar/" + value.id}
+                      className="btn btn-primary"
+                    >
+                      <i className="fas fa-pen"></i>
+                    </Link>
+                    <button onClick={() => deletar(value.id)} className="btn btn-danger">
+                      <i className="fas fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <> </>
+            )}
           </tbody>
         </table>
       </div>
