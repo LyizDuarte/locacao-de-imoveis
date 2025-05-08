@@ -12,31 +12,30 @@ export default class ImovelController {
   }
   async listar(req, res) {
     var lista = await this.#repoImovel.listar()
-    if (lista.length == 0)
-      return res.status(404).json({ msg: "Nenhum imóvel encontrado!" })
+    if (lista.length == 0) return res.status(404).json({ msg: "Nenhum imóvel encontrado!" })
     return res.status(200).json(lista)
   }
+
+  async imagens(req, res) {
+    let { id } = req.params
+    let lista = await this.#repoImagens.listarPorImovel(id)
+    if (lista.length > 0) {
+      return res.status(200).json(lista)
+    } else {
+      return res.status(404).json({ msg: "Nenhuma imagem encontrada!" })
+    }
+  }
+
   async obter(req, res) {
     const { id } = req.params
     var lista = await this.#repoImovel.obter(id)
-    if (lista.length == 0)
-      return res.status(404).json({ msg: "Nenhum imóvel encontrado" })
+    if (lista.length == 0) return res.status(404).json({ msg: "Nenhum imóvel encontrado" })
     return res.status(200).json(lista)
   }
   async cadastrar(req, res) {
-    const { descricao, cep, endereco, bairro, cidade, valor, disponivel } =
-      req.body
+    const { descricao, cep, endereco, bairro, cidade, valor, disponivel } = req.body
 
-    let imovel = new ImovelEntity(
-      0,
-      descricao,
-      cep,
-      endereco,
-      bairro,
-      cidade,
-      valor,
-      disponivel
-    )
+    let imovel = new ImovelEntity(0, descricao, cep, endereco, bairro, cidade, valor, disponivel)
     if (imovel.validar()) {
       if (await this.#repoImovel.cadastrar(imovel)) {
         let imagens = []
@@ -49,9 +48,7 @@ export default class ImovelController {
             if (imagemEntity.validar()) {
               imagens.push(imagemEntity)
             } else {
-              throw new Error(
-                "Imagem não está no formato valido (Permitido apenas PNG, JPG e JPEG)"
-              )
+              throw new Error("Imagem não está no formato valido (Permitido apenas PNG, JPG e JPEG)")
             }
             for (let img of imagens) {
               if ((await this.#repoImagens.gravar(img)) == false)
@@ -62,24 +59,12 @@ export default class ImovelController {
         res.status(200).json({ msg: "Imovel cadastrado com sucesso!" })
       } else throw new Error("Erro ao inserir imóvel no banco de dados")
     } else {
-      return res
-        .status(400)
-        .json({ msg: "Os dados do imóvel não foram preenchidos corretamente" })
+      return res.status(400).json({ msg: "Os dados do imóvel não foram preenchidos corretamente" })
     }
   }
   async alterar(req, res) {
-    const { id, descricao, cep, endereco, bairro, cidade, valor, disponivel } =
-      req.body
-    let imovel = new ImovelEntity(
-      id,
-      descricao,
-      cep,
-      endereco,
-      bairro,
-      cidade,
-      valor,
-      disponivel
-    )
+    const { id, descricao, cep, endereco, bairro, cidade, valor, disponivel } = req.body
+    let imovel = new ImovelEntity(id, descricao, cep, endereco, bairro, cidade, valor, disponivel)
     if (imovel.validar()) {
       let imagemEntity = new ImagemImovelEntity()
       if ((await this.#repoImovel.obter(id)).length > 0) {
@@ -99,16 +84,13 @@ export default class ImovelController {
           await this.#repoImagens.deletarPorImovel(imovel.id)
           //insere as novas imagens que vieram na requisão
           for (let img of imagens) {
-            if ((await this.#repoImagens.gravar(img)) == false) 
-              throw new Error("Erro ao atualizar as imagens")
+            if ((await this.#repoImagens.gravar(img)) == false) throw new Error("Erro ao atualizar as imagens")
           }
           res.status(200).json({ msg: "Imovel alterado com sucesso!" })
         } else throw new Error("Erro ao alterar imóvel no banco de dados")
       }
     } else {
-      return res
-        .status(400)
-        .json({ msg: "Os dados do imóvel não foram preenchidos corretamente" })
+      return res.status(400).json({ msg: "Os dados do imóvel não foram preenchidos corretamente" })
     }
   }
   async deletar(req, res) {

@@ -356,6 +356,41 @@
         ]
       }
     },
+    "/imovel/imagens/{id}": {
+      "get": {
+        "tags": [
+          "Imóvel"
+        ],
+        "summary": "Lista as imagens de um imóvel existente através do id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/locacao": {
       "post": {
         "tags": [

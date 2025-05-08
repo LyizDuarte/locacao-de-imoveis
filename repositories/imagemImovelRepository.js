@@ -1,4 +1,6 @@
 import Database from "../db/database.js"
+import ImagemImovelEntity from "../entities/imagemImovelEntity.js"
+import ImovelEntity from "../entities/imovelEntity.js"
 
 export default class ImagemImovelRepository {
   #banco
@@ -24,5 +26,22 @@ export default class ImagemImovelRepository {
     let params = [idImovel]
     let result = await this.#banco.ExecutaComandoNonQuery(sql, params)
     return result
+  }
+
+  async listarPorImovel(idImovel) {
+    let sql = `select * from tb_imovelimagem where imv_id = ?`
+    let params = [idImovel]
+    let rows = await this.#banco.ExecutaComando(sql, params)
+    let lista = []
+    for (let row of rows) {
+      lista.push(
+        new ImagemImovelEntity(
+          row["imi_id"],
+          new ImovelEntity(row["imv_id"]),
+          "data:image/jpeg;base64," + row["imi_img"].toString("base64")
+        )
+      )
+    }
+    return lista
   }
 }
