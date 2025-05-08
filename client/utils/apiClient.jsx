@@ -83,12 +83,14 @@ export default class ApiClient {
       const json = await response.json()
       return json
     } else {
-      console.error(`Erro ao realizar requisicao! HTTP Status: ${response.status}`)
-      let resposta = await response.json()
-      if (resposta.msg) {
-        toast.error(resposta.msg)
-      } else {
-        toast.error(`Erro ao realizar requisicao! HTTP Status: ${response.status}`)
+      if (response.status != 404) {
+        console.error(`Erro ao realizar requisicao! HTTP Status: ${response.status}`)
+        let resposta = await response.json()
+        if (resposta.msg) {
+          toast.error(resposta.msg)
+        } else {
+          toast.error(`Erro ao realizar requisicao! HTTP Status: ${response.status}`)
+        }
       }
     }
   }

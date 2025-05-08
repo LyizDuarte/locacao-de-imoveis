@@ -1,0 +1,17 @@
+.grid-imovel{
+    display: grid;
+    grid-template-columns: 200px 200px 200px 200px 200px;
+    gap:20px;
+}
+
+@media (max-width: 1024px){
+    .grid-imovel{
+        grid-template-columns: 200px 200px 200px;
+    }
+}
+
+@media (max-width: 560px){
+    .grid-imovel{
+        grid-template-columns: 200px;
+    }
+}
