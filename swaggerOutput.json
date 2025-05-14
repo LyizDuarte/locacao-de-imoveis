@@ -438,6 +438,31 @@
         "tags": [
           "Aluguel"
         ],
+        "summary": "Retorna todos os aluguéis",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/aluguel-usuario": {
+      "get": {
+        "tags": [
+          "Aluguel"
+        ],
         "summary": "Retorna todos os aluguéis do usuário",
         "description": "",
         "responses": {
