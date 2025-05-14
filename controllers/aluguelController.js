@@ -15,6 +15,15 @@ export default class AluguelController {
     }
   }
 
+  async listarTodos(req, res) {
+    let lista = await this.#repo.listarTodos()
+    if (lista.length == 0) {
+      return res.status(404).json({ msg: "Nenhum aluguel encontrado" })
+    } else {
+      return res.status(200).json(lista)
+    }
+  }
+
   async marcarComoPago(req, res) {
     let { id } = req.body
     if (id) {

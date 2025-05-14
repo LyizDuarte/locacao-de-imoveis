@@ -16,13 +16,7 @@ export default class AluguelRepository {
   async gravar(aluguel) {
     let sql = `insert into tb_aluguel (alu_mes, alu_vencimento, alu_valor, alu_pago, ctr_id) 
                 values (?, ?, ?, ?, ?)`
-    let params = [
-      aluguel.mes,
-      aluguel.vencimento,
-      aluguel.valor,
-      aluguel.pago,
-      aluguel.contrato.id,
-    ]
+    let params = [aluguel.mes, aluguel.vencimento, aluguel.valor, aluguel.pago, aluguel.contrato.id]
     let result = await this.#banco.ExecutaComandoNonQuery(sql, params)
     return result
   }
@@ -48,10 +42,32 @@ export default class AluguelRepository {
           row["alu_vencimento"],
           row["alu_valor"],
           row["alu_pago"],
+          new ContratoEntity(row["ctr_id"], new ImovelEntity(row["imv_id"]), new UsuarioEntity(row["usu_id"]))
+        )
+      )
+    }
+    return lista
+  }
+
+  async listarTodos() {
+    let sql = `select * from tb_aluguel a inner join tb_contrato c on a.ctr_id = c.ctr_id
+                inner join tb_usuario u on c.usu_id = u.usu_id 
+                inner join tb_imovel i on i.imv_id = c.imv_id 
+                order by alu_vencimento`
+    let result = await this.#banco.ExecutaComando(sql)
+    let lista = []
+    for (let row of result) {
+      lista.push(
+        new AluguelEntity(
+          row["alu_id"],
+          row["alu_mes"],
+          row["alu_vencimento"],
+          row["alu_valor"],
+          row["alu_pago"],
           new ContratoEntity(
             row["ctr_id"],
-            new ImovelEntity(row["imv_id"]),
-            new UsuarioEntity(row["usu_id"])
+            new ImovelEntity(row["imv_id"], "", "", row["imv_endereco"]),
+            new UsuarioEntity(row["usu_id"], row["usu_nome"])
           )
         )
       )

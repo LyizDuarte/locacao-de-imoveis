@@ -9,6 +9,15 @@ let auth = new AuthMiddleware()
 
 router.get("/aluguel", auth.validar, (req, res) => {
   // #swagger.tags = ["Aluguel"]
+  // #swagger.summary = "Retorna todos os aluguéis"
+  /* #swagger.security = [{
+            "bearerAuth": []
+    }] */
+  ctrl.listarTodos(req, res)
+})
+
+router.get("/aluguel-usuario", auth.validar, (req, res) => {
+  // #swagger.tags = ["Aluguel"]
   // #swagger.summary = "Retorna todos os aluguéis do usuário"
   /* #swagger.security = [{
             "bearerAuth": []
