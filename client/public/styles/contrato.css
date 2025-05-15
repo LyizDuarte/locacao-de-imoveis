@@ -3,3 +3,12 @@
     justify-content: space-evenly;
     align-items: end;
 }
+
+@media (max-width: 767px){
+    .contratos{
+        display: block;
+    }
+    .contratos > div{
+        margin-top: 10px;
+    }
+}

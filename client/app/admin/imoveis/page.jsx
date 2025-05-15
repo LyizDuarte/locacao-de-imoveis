@@ -25,7 +25,7 @@ export default function ImoveisPage() {
     <div>
       <h1>Imóveis Cadastrados</h1>
       <br />
-      <Link href="#" className="btn btn-primary">
+      <Link href="/admin/imoveis/cadastrar" className="btn btn-primary">
         <i className="fas fa-plus" style={{marginRight: "5px"}}></i>Cadastrar imóvel
       </Link>
       <br />
