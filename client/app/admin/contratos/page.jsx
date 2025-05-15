@@ -1,17 +1,37 @@
 "use client"
 
 import { apiClient } from "@/utils/apiClient"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import "../../../public/styles/contrato.css"
+import toast from "react-hot-toast"
 
 export default function ContratosPage() {
   const [listaContrato, setListaContrato] = useState([])
+  const dataInicio = useRef("")
+  const dataFim = useRef("")
+  const descricao = useRef("")
 
   async function listar() {
-    let response = await apiClient.get("/aluguel")
+    let queryString = ""
+    if (descricao.value != "") {
+      queryString += `?descricao=${descricao.current.value}`
+    }
+    if (dataFim.current.value != "" && dataInicio.current.value != "") {
+      if (queryString != "") {
+        queryString += `&dataInicio=${dataInicio.current.value}&dataFim=${dataFim.current.value}`
+      } else {
+        queryString += `?dataInicio=${dataInicio.current.value}&dataFim=${dataFim.current.value}`
+      }
+    } else if (dataFim.current.value != "" || dataInicio.current.value != "") {
+      toast.error("Preencha a data de início e fim para fazer a filtragem!")
+      return
+    }
+
+    let response = await apiClient.get(encodeURI("/aluguel" + queryString))
     if (response) {
-      console.log(response)
       setListaContrato(response)
+    } else {
+      toast.error("Nenhum contrato encontrado!")
     }
   }
 
@@ -30,18 +50,23 @@ export default function ContratosPage() {
         <div className="contratos">
           <div>
             <label htmlFor=""> Data de Início</label>
-            <input className="form-control" type="date" />
+            <input ref={dataInicio} className="form-control" type="date" />
           </div>
           <div>
             <label htmlFor=""> Data de Fim</label>
-            <input className="form-control" type="date" />
+            <input ref={dataFim} className="form-control" type="date" />
           </div>
           <div>
             <label htmlFor=""> Descrição</label>
-            <input placeholder="Nome do locatário ou Endereço do Imóvel" className="form-control" type="text" />
+            <input
+              ref={descricao}
+              placeholder="Nome do locatário ou Endereço do Imóvel"
+              className="form-control"
+              type="text"
+            />
           </div>
           <div>
-            <button className="btn btn-primary">
+            <button onClick={listar} className="btn btn-primary">
               <i className="fas fa-search"></i>Buscar
             </button>
           </div>

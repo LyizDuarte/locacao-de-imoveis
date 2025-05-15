@@ -1,3 +1,4 @@
+"use client"
 import toast from "react-hot-toast"
 
 export default class ApiClient {
@@ -18,9 +19,11 @@ export default class ApiClient {
   static getInstance() {
     if (ApiClient.instance == null) {
       ApiClient.instance = new ApiClient()
-      const jwt = localStorage.getItem("jwt")
-      if (jwt) {
-        ApiClient.instance.setJwt(jwt)
+      if (typeof localStorage != "undefined") {
+        const jwt = localStorage.getItem("jwt")
+        if (jwt) {
+          ApiClient.instance.setJwt(jwt)
+        }
       }
     }
     return ApiClient.instance

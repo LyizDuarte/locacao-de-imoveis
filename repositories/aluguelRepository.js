@@ -49,10 +49,24 @@ export default class AluguelRepository {
     return lista
   }
 
-  async listarTodos() {
+  async listarTodos(descricao, dataInicio, dataFim) {
+    let sqlFiltro = ``
+
+    if (descricao) {
+      sqlFiltro += `where (u.usu_nome like '%${descricao}%' or i.imv_endereco like '%${descricao}%')`
+    }
+    if (dataInicio && dataFim) {
+      if (sqlFiltro != "") {
+        sqlFiltro += `and a.alu_vencimento >= '${dataInicio}' and a.alu_vencimento <= '${dataFim}'`
+      } else {
+        sqlFiltro += `where a.alu_vencimento >= '${dataInicio}' and a.alu_vencimento <= '${dataFim}'`
+      }
+    }
+
     let sql = `select * from tb_aluguel a inner join tb_contrato c on a.ctr_id = c.ctr_id
                 inner join tb_usuario u on c.usu_id = u.usu_id 
                 inner join tb_imovel i on i.imv_id = c.imv_id 
+                ${sqlFiltro}
                 order by alu_vencimento`
     let result = await this.#banco.ExecutaComando(sql)
     let lista = []
