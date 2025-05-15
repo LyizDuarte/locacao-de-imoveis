@@ -1,6 +1,6 @@
 # Sistema de Locação de Imóveis 🏠🔑
 
-Este é um projeto de API REST para gerenciamento de locação de imóveis, desenvolvido com Java e Spring Boot. Ele permite o cadastro e controle de imóveis, clientes, contratos de aluguel e os respectivos registros de aluguéis. 📄⚙️
+Este é um projeto de API REST para gerenciamento de locação de imóveis, desenvolvido com Node.js e Next.js. Ele permite o cadastro e controle de imóveis, clientes, contratos de aluguel e os respectivos registros de aluguéis. 📄⚙️
 
 ## Funcionalidades Principais ✨
 
