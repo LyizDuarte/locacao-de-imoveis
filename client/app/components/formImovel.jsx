@@ -19,7 +19,7 @@ export default function FormImovel() {
   
   const router = useRouter()
 
-  function gravar() {
+  async function gravar() {
     if (
       descricao.current.value != "" &&
       cep.current.value != "" &&
@@ -51,7 +51,7 @@ export default function FormImovel() {
       form.append("disponivel", disponivel.current.checked == true ? "S" : "N")
       for (let file of imagens.current.files) form.append("imagens", file)
 
-      let response = apiClient.postFormData("/imovel", form)
+      let response = await apiClient.postFormData("/imovel", form)
       if (response) {
         toast.success("Imóvel gravado com sucesso!")
         router.replace("/admin/imoveis")
