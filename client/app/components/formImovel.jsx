@@ -2,7 +2,7 @@
 
 import { apiClient } from "@/utils/apiClient"
 import Link from "next/link"
-// import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 import { useRef, useState } from "react"
 import toast from "react-hot-toast"
 
@@ -16,8 +16,8 @@ export default function FormImovel() {
   const disponivel = useRef("")
   const imagens = useRef("")
   const [listaImagens, setListaImagens] = useState([])
-
-  // const router = useRouter()
+  
+  const router = useRouter()
 
   function gravar() {
     if (
@@ -54,7 +54,7 @@ export default function FormImovel() {
       let response = apiClient.postFormData("/imovel", form)
       if (response) {
         toast.success("Imóvel gravado com sucesso!")
-        // router.replace("/admin/imoveis")
+        router.replace("/admin/imoveis")
       }
     } else {
       toast.error("Preencha todos os campos antes de gravar!")
