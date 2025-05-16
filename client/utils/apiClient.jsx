@@ -76,7 +76,10 @@ export default class ApiClient {
     const response = await fetch(this.baseUrl, endpoint, {
       method: "POST",
       body: body,
-      headers: ApiClient.instance.headers,
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "Authorization": `Bearer ${ApiClient.instance.jwt}`,
+      },
     })
     return await this.checarResposta(response)
   }
