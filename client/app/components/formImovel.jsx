@@ -132,11 +132,11 @@ export default function FormImovel() {
         <input onChange={carregarImagens} ref={imagens} className="form-control" type="file" multiple></input>
       </div>
       <br />
-      <div style={{ display: "flex", marginRight: "5px" }}>
+      <div style={{ display: "flex"}}>
         {listaImagens != null && listaImagens.length > 0 ? (
           listaImagens.map((value, index) => {
             return (
-              <div key={index}>
+              <div style={{ marginRight: "15px" }} key={index}>
                 <img src={value} width="150" />
               </div>
             )
@@ -145,6 +145,8 @@ export default function FormImovel() {
           <></>
         )}
       </div>
+      <br />
+      <br />
       <div>
         <button onClick={gravar} style={{ marginRight: "5px" }} className="btn btn-success">
           <i className="fas fa-check"></i> Cadastrar
