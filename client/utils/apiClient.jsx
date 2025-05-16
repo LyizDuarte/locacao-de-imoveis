@@ -73,11 +73,10 @@ export default class ApiClient {
     return await this.checarResposta(response)
   }
   async postFormData(endpoint, body) {
-    const response = await fetch(this.baseUrl, endpoint, {
+    const response = await fetch(this.baseUrl + endpoint, {
       method: "POST",
       body: body,
       headers: {
-        "Content-Type": "multipart/form-data",
         "Authorization": `Bearer ${ApiClient.instance.jwt}`,
       },
     })
