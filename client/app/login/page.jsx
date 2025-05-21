@@ -2,12 +2,15 @@
 
 import { apiClient } from "@/utils/apiClient"
 import { useRouter } from "next/navigation"
-import { useRef } from "react"
+import { useContext, useRef } from "react"
 import toast from "react-hot-toast"
+import UserContext from "../context/userContext"
 
 export default function LoginPage() {
   const email = useRef("")
   const senha = useRef("")
+
+  const { setUser } = useContext(UserContext)
 
   const router = useRouter()
 
@@ -20,7 +23,9 @@ export default function LoginPage() {
       let response = await apiClient.post("/auth/token", obj)
       if (response) {
         apiClient.setJwt(response.token)
+        setUser(response.usuario)
         localStorage.setItem("jwt", response.token)
+        localStorage.setItem("usuario", JSON.stringify(response.usuario))
         router.push("/admin")
       }
     } else {

@@ -1,6 +1,12 @@
+'use client'
+
 import Link from "next/link"
+import { useContext } from "react"
+import UserContext from "../context/userContext"
 
 export default function AdminLayout({ children }) {
+  const { user } = useContext(UserContext)
+
   return (
     <div>
       <div id="wrapper">
@@ -65,7 +71,7 @@ export default function AdminLayout({ children }) {
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    <span className="mr-2 d-none d-lg-inline text-gray-600 small">Usuário</span>
+                    <span className="mr-2 d-none d-lg-inline text-gray-600 small">{user.nome}</span>
                     <img className="img-profile rounded-circle" src="/images/user.jpg" />
                   </a>
 

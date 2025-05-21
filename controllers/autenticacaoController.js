@@ -9,13 +9,11 @@ export default class AutenticacaoController {
       let usuario = await repo.validarAcesso(email, senha)
       if (usuario) {
         let auth = new AuthMiddleware()
-        let token = auth.gerarToken(
-          usuario.id,
-          usuario.nome,
-          usuario.email,
-          usuario.perfil.id
-        )
-        return res.status(200).json({ token: token })
+        let token = auth.gerarToken(usuario.id, usuario.nome, usuario.email, usuario.perfil.id)
+        res.cookie("usuario-cookie", usuario.perfil.id, {
+          httpOnly: true,
+        })
+        return res.status(200).json({ token: token, usuario: usuario })
       } else {
         return res.status(400).json({
           msg: "Email/Senha incorretos! Verifique se as credencias estão corretas",
