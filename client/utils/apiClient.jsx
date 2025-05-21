@@ -44,6 +44,7 @@ export default class ApiClient {
   async post(endpoint, body) {
     const response = await fetch(this.baseUrl + endpoint, {
       method: "POST",
+      credentials: "include",
       headers: ApiClient.instance.headers,
       body: JSON.stringify(body),
     })
@@ -77,7 +78,7 @@ export default class ApiClient {
       method: "POST",
       body: body,
       headers: {
-        "Authorization": `Bearer ${ApiClient.instance.jwt}`,
+        Authorization: `Bearer ${ApiClient.instance.jwt}`,
       },
     })
     return await this.checarResposta(response)
