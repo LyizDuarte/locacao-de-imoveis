@@ -34,4 +34,13 @@ router.patch("/aluguel/pagar", auth.validar, (req, res) => {
   ctrl.marcarComoPago(req, res)
 })
 
+router.get("/aluguel/checkout/:idAluguel", (req, res) => {
+  /* #swagger.security = [{
+      "bearerAuth": []
+  }] */
+  // #swagger.tags = ['Checkout']
+  // #swagger.summary = "Gerar link de pagamento para o alguel"
+  ctrl.checkout(req, res);
+})
+
 export default router

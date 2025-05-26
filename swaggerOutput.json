@@ -545,6 +545,35 @@
         }
       }
     },
+    "/aluguel/checkout/{idAluguel}": {
+      "get": {
+        "tags": [
+          "Checkout"
+        ],
+        "summary": "Gerar link de pagamento para o alguel",
+        "description": "",
+        "parameters": [
+          {
+            "name": "idAluguel",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/perfil": {
       "get": {
         "tags": [

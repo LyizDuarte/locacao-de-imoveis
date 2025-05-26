@@ -13,6 +13,16 @@ export default class AluguelRepository {
   constructor() {
     this.#banco = new Database()
   }
+  async obter(id) {
+    let sql = "select * from tb_aluguel where alu_id = ?";
+    const rows = await this.#banco.ExecutaComando(sql, [id]);
+    if(rows.length > 0) {
+        const row = rows[0];
+        return new AluguelEntity(row["alu_id"], row["alu_mes"], row["alu_vencimento"], row["alu_valor"], row["alu_pago"]);
+    }
+    return null
+}
+
   async gravar(aluguel) {
     let sql = `insert into tb_aluguel (alu_mes, alu_vencimento, alu_valor, alu_pago, ctr_id) 
                 values (?, ?, ?, ?, ?)`
@@ -29,25 +39,22 @@ export default class AluguelRepository {
   }
 
   async listar(usuId) {
-    let sql = `select * from tb_aluguel a inner join tb_contrato c 
-                on a.ctr_id = c.ctr_id where c.usu_id = ?`
-    let params = [usuId]
-    let result = await this.#banco.ExecutaComando(sql, params)
-    let lista = []
-    for (let row of result) {
-      lista.push(
-        new AluguelEntity(
-          row["alu_id"],
-          row["alu_mes"],
-          row["alu_vencimento"],
-          row["alu_valor"],
-          row["alu_pago"],
-          new ContratoEntity(row["ctr_id"], new ImovelEntity(row["imv_id"]), new UsuarioEntity(row["usu_id"]))
-        )
-      )
+    let sql = `select * from tb_aluguel a 
+                    inner join tb_contrato c on a.ctr_id = c.ctr_id 
+                    inner join tb_imovel i on i.imv_id = c.imv_id
+                    where c.usu_id = ?`;
+    let params = [usuId];
+    let result = await this.#banco.ExecutaComando(sql, params);
+    let lista = [];
+    for(let row of result) {
+        lista.push(
+        new AluguelEntity(row["alu_id"], row["alu_mes"], row["alu_vencimento"], row["alu_valor"],row["alu_pago"], 
+        new ContratoEntity(row["ctr_id"], 
+        new ImovelEntity(row["imv_id"], row["imv_descricao"], row["imv_endereco"], row["imv_cep"], row["imv_bairro"], row["imv_cidade"]), 
+        new UsuarioEntity(row["usu_id"]))))
     }
-    return lista
-  }
+    return lista;
+}
 
   async listarTodos(descricao, dataInicio, dataFim) {
     let sqlFiltro = ``
